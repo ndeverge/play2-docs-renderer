@@ -21,7 +21,7 @@ object Application extends Controller {
     {
       println(page + " = " + Github.findPath(page))
       Github.findPath(page) match {
-        case None => NotFound("Not found")
+        case None => NotFound("Not found on Github")
         case Some(path) => {
 
           Async {

@@ -12,14 +12,21 @@ object Github {
 
   def cleanPath(pathsToClean: List[String], link: String): Option[String] = {
 
-    def pattern = ("documentation/manual([A-Za-z/]+)" + link + ".md").r
-    val found = pathsToClean.map(pathToClean => pattern.findFirstMatchIn(pathToClean) match {
-      case Some(matching) => Some(matching.group(1))
-      case None => None
-    })
-    if (found.size == 1)
-      found(0)
-    else None
+    if (pathsToClean.contains("documentation/manual/" + link + ".md")) {
+      Some("/")
+    } else {
+
+      def pattern = ("documentation/manual([A-Za-z/]+)" + link + ".md").r
+      val found = pathsToClean.map(pathToClean => pattern.findFirstMatchIn(pathToClean) match {
+        case Some(matching) => Some(matching.group(1))
+        case None => None
+      })
+
+      println(found)
+      if (found.size == 1)
+        found(0)
+      else None
+    }
   }
 
   def findPath(link: String): Option[String] = {

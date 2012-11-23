@@ -34,7 +34,12 @@ class GithubLinkRenderer extends org.pegdown.LinkRenderer {
   }
 
   private def buildLink(href: String, text: String) = {
-    val link = routes.Application.render(href.trim).url
-    new LinkRenderer.Rendering(link, text.trim)
+
+    if (href.startsWith("http")) {
+      new LinkRenderer.Rendering(href, text.trim)
+    } else {
+      val link = routes.Application.render(href.trim).url
+      new LinkRenderer.Rendering(link, text.trim)
+    }
   }
 }
