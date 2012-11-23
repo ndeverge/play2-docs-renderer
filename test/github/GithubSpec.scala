@@ -35,7 +35,7 @@ class GithubSpec extends Specification {
 
       val fullPath = "documentation/manual/book/BookHome.md"
 
-      Github.cleanPath(List(fullPath), "BookHome") must beEqualTo(Some("/book/"))
+      Github.cleanPath(List(fullPath), "BookHome") must beEqualTo(Some("/book"))
 
     }
 
@@ -49,13 +49,19 @@ class GithubSpec extends Specification {
 
     "find 'detailledTopics/assets/' when supplying 'AssetsLess'" in {
 
-      Github.findPath("AssetsLess") must beEqualTo(Some("/detailledTopics/assets/"))
+      Github.findPath("AssetsLess") must beEqualTo(Some("/detailledTopics/assets"))
 
     }
 
     "find '/' when supplying 'Home'" in {
 
       Github.findPath("Home") must beEqualTo(Some("/"))
+
+    }
+
+    "find '/javaGuide/' when supplying 'JavaHome'" in {
+
+      Github.findPath("JavaHome") must beEqualTo(Some("/javaGuide"))
 
     }
 

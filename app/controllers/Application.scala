@@ -25,7 +25,7 @@ object Application extends Controller {
         case Some(path) => {
 
           Async {
-            WS.url(MANUAL_BASE_URL + path + page + ".md").get().map { response =>
+            WS.url(MANUAL_BASE_URL + path + "/" + page + ".md").get().map { response =>
               response.status match {
                 case 200 => {
                   val html = PegdownConverter.markdown2html(response.body)

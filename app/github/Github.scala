@@ -16,15 +16,16 @@ object Github {
       Some("/")
     } else {
 
-      def pattern = ("documentation/manual([A-Za-z/]+)" + link + ".md").r
+      def pattern = ("documentation/manual([A-Za-z/]+)/" + link + ".md").r
       val found = pathsToClean.map(pathToClean => pattern.findFirstMatchIn(pathToClean) match {
         case Some(matching) => Some(matching.group(1))
         case None => None
       })
-
+      val foundFlatten = found.flatten
       println(found)
-      if (found.size == 1)
-        found(0)
+      println(foundFlatten)
+      if (foundFlatten.size == 1)
+        Some(foundFlatten(0))
       else None
     }
   }
