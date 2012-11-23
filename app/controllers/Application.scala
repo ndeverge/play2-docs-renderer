@@ -7,6 +7,7 @@ import play.api.data.Forms._
 import play.api.libs.ws.WS
 import play.api.libs.concurrent.Execution.Implicits._
 import markdown.PegdownConverter
+import github.Github
 
 object Application extends Controller {
 
@@ -16,21 +17,27 @@ object Application extends Controller {
     Redirect(routes.Application.render("Home"))
   }
 
-  // https://github.com/playframework/Play20/tree-list/794a9e550745165c9e7f7573799e6b75c030161c
-
   def render(page: String) = Action { implicit request =>
     {
-      Async {
-        WS.url(MANUAL_BASE_URL + page + ".md").get().map { response =>
-          response.status match {
-            case 200 => {
-              val html = PegdownConverter.markdown2html(response.body)
-              Ok(views.html.markdown(html))
-            }
-            case _ => Status(response.status)
-          }
+      println(page + " = " + Github.findPath(page))
+      Github.findPath(page) match {
+        case None => NotFound("Not found")
+        case Some(path) => {
 
+          Async {
+            WS.url(MANUAL_BASE_URL + path + page + ".md").get().map { response =>
+              response.status match {
+                case 200 => {
+                  val html = PegdownConverter.markdown2html(response.body)
+                  Ok(views.html.markdown(html))
+                }
+                case _ => Status(response.status)
+              }
+
+            }
+          }
         }
+
       }
     }
   }

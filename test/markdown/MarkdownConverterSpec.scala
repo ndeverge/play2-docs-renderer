@@ -3,8 +3,6 @@ package markdown
 import org.specs2.mutable._
 import play.api.test._
 import play.api.test.Helpers._
-import java.io.InputStream
-import java.io.ByteArrayInputStream
 
 /**
  * Add your spec here.
