@@ -13,7 +13,7 @@ object Application extends Controller {
   val MANUAL_BASE_URL = "https://raw.github.com/playframework/Play20/master/documentation/manual/"
 
   def index = Action {
-    Ok(views.html.index("Your new application is ready."))
+    Redirect(routes.Application.render("Home"))
   }
 
   // https://github.com/playframework/Play20/tree-list/794a9e550745165c9e7f7573799e6b75c030161c
