@@ -29,7 +29,7 @@ object Application extends Controller {
               response.status match {
                 case 200 => {
                   val html = PegdownConverter.markdown2html(response.body)
-                  Ok(views.html.markdown(html))
+                  Ok(views.html.markdown(html, ""))
                 }
                 case _ => Status(response.status)
               }

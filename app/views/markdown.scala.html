@@ -1,4 +1,4 @@
-@(body: String)
+@(body: String, sidebar: String)
 
 @main("Play documentation (SNAPSHOT)") {
 <div id="content" class="wrapper doc">
@@ -6,7 +6,7 @@
     	@Html(body)
     </article>
     <aside>
-    <h3>Getting started</h3>
+    	@Html(sidebar)
     </aside>
     </div>
 }
