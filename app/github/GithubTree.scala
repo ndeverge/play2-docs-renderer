@@ -16,7 +16,7 @@ object GithubTree {
       Some("/")
     } else {
 
-      def pattern = ("documentation/manual([A-Za-z/]+)/" + link + ".md").r
+      def pattern = ("documentation/manual([A-Za-z0-9/]+)/" + link + ".md").r
       val found = pathsToClean.flatMap(pathToClean => pattern.findFirstMatchIn(pathToClean) match {
         case Some(matching) => Some(matching.group(1))
         case None => None

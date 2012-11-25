@@ -37,6 +37,14 @@ class GithubTreeSpec extends Specification {
 
     }
 
+    "clean the path for a page containing numbers" in {
+
+      val fullPath = "documentation/manual/scalaGuide/main/i18n/ScalaI18N.md"
+
+      GithubTree.cleanPath(List(fullPath), "ScalaI18N") must beEqualTo(Some("/scalaGuide/main/i18n"))
+
+    }
+
     "clean the path for the Home page" in {
 
       val fullPath = "documentation/manual/Home.md"
