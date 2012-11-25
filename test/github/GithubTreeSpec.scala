@@ -17,8 +17,6 @@ class GithubTreeSpec extends Specification {
 
     "transform a json to a List" in {
 
-      GithubTree.json must not beNull
-
       val jsonTest = Json.parse(GithubTree.fetchFileTreeAsJson)
       GithubTree.toList(jsonTest) must beAnInstanceOf[List[String]]
 
