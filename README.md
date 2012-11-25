@@ -1,8 +1,6 @@
 A Play2 documentation renderer
 =====================================
 
-## What is it
-
 A quick and dirty (and buggy ?) app to navigate through the Play2 documentation hosted on the [Play2 Github repository](https://github.com/playframework/Play20/tree/master/documentation/manual)
 
 Written using Play 2.1 RC1 with Scala (bad Scala actually since it is my first Scala code...).
