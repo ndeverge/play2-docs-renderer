@@ -4,7 +4,7 @@ import play.Project._
 
 object ApplicationBuild extends Build {
 
-  val appName         = "play2-docs-snapshot"
+  val appName         = "play2-docs-renderer"
   val appVersion      = "1.0-SNAPSHOT"
 
   val appDependencies = Seq(
