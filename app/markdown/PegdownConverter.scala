@@ -16,7 +16,7 @@ object PegdownConverter extends MarkdownConverter {
   private def pegdownConversion(input: String): String = {
 
     // TODO: it may be not thread safe ?
-    new PegDownProcessor(Extensions.AUTOLINKS + Extensions.WIKILINKS).markdownToHtml(input, new GithubLinkRenderer())
+    new PegDownProcessor(Extensions.FENCED_CODE_BLOCKS + Extensions.WIKILINKS).markdownToHtml(input, new GithubLinkRenderer())
 
   }
 
