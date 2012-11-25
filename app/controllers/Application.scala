@@ -7,7 +7,7 @@ import play.api.data.Forms._
 import play.api.libs.ws.WS
 import play.api.libs.concurrent.Execution.Implicits._
 import markdown.PegdownConverter
-import github.Github
+import github.GithubTree
 
 object Application extends Controller {
 
@@ -19,8 +19,7 @@ object Application extends Controller {
 
   def render(page: String) = Action { implicit request =>
     {
-      println(page + " = " + Github.findPath(page))
-      Github.findPath(page) match {
+      GithubTree.findPath(page) match {
         case None => NotFound("Not found on Github")
         case Some(path) => {
 

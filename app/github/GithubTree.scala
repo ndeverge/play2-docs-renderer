@@ -3,7 +3,7 @@ package github
 import play.api.libs.json._
 import scala.util.matching.Regex
 
-object Github {
+object GithubTree {
 
   def toList(jsonValue: JsValue) = {
 
@@ -21,7 +21,6 @@ object Github {
         case Some(matching) => Some(matching.group(1))
         case None => None
       })
-      println(found)
       if (found.size == 1)
         Some(found(0))
       else None
@@ -30,10 +29,15 @@ object Github {
 
   def findPath(link: String): Option[String] = {
 
-    val links = toList(Json.parse(Github.json)).filter(_.contains(link))
+    val links = toList(Json.parse(fetchFileTreeAsJson)).filter(_.contains(link))
     cleanPath(links, link)
   }
 
+  def fetchFileTreeAsJson() = {
+    json
+  }
+
+  //https://api.github.com/repos/playframework/Play20/git/trees/46d04362930b6fbde655aac14c1f24881c6cd451?recursive=1
   // https://github.com/playframework/Play20/tree-list/794a9e550745165c9e7f7573799e6b75c030161c
   val json = """
   {
