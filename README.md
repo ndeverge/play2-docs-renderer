@@ -5,7 +5,10 @@ A quick and dirty (and buggy ?) app to navigate through the Play2 documentation 
 
 Written using Play 2.1 RC1 with Scala (bad Scala actually since it is my first Scala code...).
 
-Uses [[Pegdown](https://github.com/sirthias/pegdown/) for the markdown rendering.
+Thanks to 
+
+* [Pegdown](https://github.com/sirthias/pegdown/) for the markdown rendering.
+* [Github API](http://developer.github.com/) for the navigation through the repository
 
 Do not hesitate to submit a pull request of fill an issue for enhancements :-)
 
