@@ -9,6 +9,8 @@ Uses [[Pegdown](https://github.com/sirthias/pegdown/) for the markdown rendering
 
 Do not hesitate to submit a pull request of fill an issue for enhancements :-)
 
+Current build status: [![Build Status](https://buildhive.cloudbees.com/job/ndeverge/job/play2-docs-renderer/badge/icon)](https://buildhive.cloudbees.com/job/ndeverge/job/play2-docs-renderer/)
+
 ## License
 
                 DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
