@@ -37,7 +37,9 @@ object GithubTree {
     json
   }
 
+  //FIXME: use the Github API
   //https://api.github.com/repos/playframework/Play20/git/trees/46d04362930b6fbde655aac14c1f24881c6cd451?recursive=1
+
   // https://github.com/playframework/Play20/tree-list/794a9e550745165c9e7f7573799e6b75c030161c
   val json = """
   {

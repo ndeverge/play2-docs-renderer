@@ -5,6 +5,7 @@ import play.api.mvc._
 import play.api.data.Form
 import play.api.data.Forms._
 import play.api.libs.ws.WS
+import scala.concurrent.{ Future, Promise }
 import play.api.libs.concurrent.Execution.Implicits._
 import markdown.PegdownConverter
 import github.GithubTree
@@ -24,19 +25,30 @@ object Application extends Controller {
         case Some(path) => {
 
           Async {
-            WS.url(MANUAL_BASE_URL + path + "/" + page + ".md").get().map { response =>
+
+            val sideBar = WS.url(MANUAL_BASE_URL + path + "/_Sidebar.md").get()
+
+            WS.url(MANUAL_BASE_URL + path + "/" + page + ".md").get().flatMap { response =>
               response.status match {
                 case 200 => {
                   val html = PegdownConverter.markdown2html(response.body)
-                  Ok(views.html.markdown(html, ""))
-                }
-                case _ => Status(response.status)
-              }
 
+                  sideBar.map { sideBarResponse =>
+                    sideBarResponse.status match {
+                      case 200 => {
+                        val sideBarHtml = PegdownConverter.markdown2html(sideBarResponse.body)
+                        Ok(views.html.markdown(html, sideBarHtml))
+                      }
+                      case _ => Ok(views.html.markdown(html, ""))
+                    }
+                  }
+
+                }
+                case _ => Future(Status(response.status))
+              }
             }
           }
         }
-
       }
     }
   }
