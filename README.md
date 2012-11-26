@@ -22,6 +22,7 @@ Current build status (stucked at the moment due to a BuildHive/SBT issue): [![Bu
 * Add an "edit" button to update a page on Github
 * Navigate through branches and tags (actually, you can only see master)
 * Fulltext search
+* Search for broken links
 
 ## License
 
