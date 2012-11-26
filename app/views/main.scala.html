@@ -1,4 +1,4 @@
-@(body: String, sidebar: String)
+@(body: String, sidebar: String, editLink: String)
 
 <!DOCTYPE html>
 
@@ -53,7 +53,7 @@
         <nav>
         	<a href="https://github.com/ndeverge/play2-docs-renderer">Warning: this documentation is generated from the master source files</a>
         </nav>
-        <img style="position: absolute; top: 0; right: 0; border: 0;" src="@routes.Assets.at("images/beta.png")" alt="Beta documentation">
+        <a href="@editLink"><img style="position: absolute; top: 0; right: 0; border: 0;" src="@routes.Assets.at("images/edit.png")" alt="Edit this content directly in Github"></a>
     </header>
     <section id="top">
 	    <div class="wrapper">

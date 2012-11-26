@@ -13,6 +13,7 @@ import github.GithubTree
 object Application extends Controller {
 
   val MANUAL_BASE_URL = "https://raw.github.com/playframework/Play20/master/documentation/manual/"
+  val EDIT_BASE_URL = "https://github.com/playframework/Play20/edit/master/documentation/manual"
 
   def index = Action {
     Redirect(routes.Application.render("Home"))
@@ -31,15 +32,16 @@ object Application extends Controller {
             WS.url(MANUAL_BASE_URL + path + "/" + page + ".md").get().flatMap { response =>
               response.status match {
                 case 200 => {
+                  val editLink = EDIT_BASE_URL + path + "/" + page + ".md"
                   val html = PegdownConverter.markdown2html(response.body)
 
                   sideBar.map { sideBarResponse =>
                     sideBarResponse.status match {
                       case 200 => {
                         val sideBarHtml = PegdownConverter.markdown2html(sideBarResponse.body)
-                        Ok(views.html.main(html, sideBarHtml))
+                        Ok(views.html.main(html, sideBarHtml, editLink))
                       }
-                      case _ => Ok(views.html.main(html, ""))
+                      case _ => Ok(views.html.main(html, "", editLink))
                     }
                   }
 
