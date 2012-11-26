@@ -13,7 +13,7 @@ object GithubTree {
   def cleanPath(pathsToClean: List[String], link: String): Option[String] = {
 
     if (pathsToClean.contains("documentation/manual/" + link + ".md")) {
-      Some("/")
+      Some("")
     } else {
 
       def pattern = ("documentation/manual([A-Za-z0-9/]+)/" + link + ".md").r

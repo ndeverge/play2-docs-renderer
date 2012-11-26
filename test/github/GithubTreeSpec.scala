@@ -25,7 +25,7 @@ class GithubTreeSpec extends Specification {
 
       val fullPath = "documentation/manual/Home.md"
 
-      GithubTree.cleanPath(List(fullPath), "Home") must beEqualTo(Some("/"))
+      GithubTree.cleanPath(List(fullPath), "Home") must beEqualTo(Some(""))
 
     }
 
@@ -49,7 +49,7 @@ class GithubTreeSpec extends Specification {
 
       val fullPath = "documentation/manual/Home.md"
 
-      GithubTree.cleanPath(List(fullPath), "Home") must beEqualTo(Some("/"))
+      GithubTree.cleanPath(List(fullPath), "Home") must beEqualTo(Some(""))
 
     }
 
@@ -61,7 +61,7 @@ class GithubTreeSpec extends Specification {
 
     "find '/' when supplying 'Home'" in {
 
-      GithubTree.findPath("Home") must beEqualTo(Some("/"))
+      GithubTree.findPath("Home") must beEqualTo(Some(""))
 
     }
 
