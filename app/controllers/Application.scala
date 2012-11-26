@@ -37,9 +37,9 @@ object Application extends Controller {
                     sideBarResponse.status match {
                       case 200 => {
                         val sideBarHtml = PegdownConverter.markdown2html(sideBarResponse.body)
-                        Ok(views.html.markdown(html, sideBarHtml))
+                        Ok(views.html.main(html, sideBarHtml))
                       }
-                      case _ => Ok(views.html.markdown(html, ""))
+                      case _ => Ok(views.html.main(html, ""))
                     }
                   }
 

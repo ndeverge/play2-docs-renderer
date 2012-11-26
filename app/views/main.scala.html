@@ -1,10 +1,10 @@
-@(title: String)(content: Html)
+@(body: String, sidebar: String)
 
 <!DOCTYPE html>
 
 <html>
     <head>
-        <title>@title</title>
+        <title>Play documentation (SNAPSHOT)</title>
         <link rel="stylesheet" media="screen" href="http://www.playframework.org/assets/stylesheets/main.css">
         <link rel="stylesheet" media="screen" href="http://www.playframework.org/assets/stylesheets/responsive.css">
         <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
@@ -52,7 +52,14 @@
 	        <h1><a href="/">Manual, tutorials &amp; references</a></h1>
 	    </div>
 	</section>
-        @content
+        <div id="content" class="wrapper doc">
+		    <article>
+		    	@Html(body)
+		    </article>
+		    <aside>
+		    	@Html(sidebar)
+		    </aside>
+		</div>
     </body>
     @if(play.Play.isProd){
     <script type="text/javascript">
