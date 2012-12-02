@@ -78,10 +78,15 @@ class GithubTreeSpec extends Specification {
       sourceTree must contain("sha")
     }
     
-    "parse the string as a Json object" in {
-      val parsed = GithubTree.parse(sourceTree)
-       
-      parsed must beAnInstanceOf[JsSuccess[GithubTree]]
+    "parse the string as a Json object without error" in {
+      GithubTree.parse(sourceTree) must beAnInstanceOf[Some[GithubTree]]
+    }
+
+    "allow to navigate through the Github tree" in {
+      GithubTree.parse(sourceTree) match {
+        case Some(tree) => tree.sha must beEqualTo("46d04362930b6fbde655aac14c1f24881c6cd451")
+        case None => failure("Unable to parse the Json")
+      }
     }
 
   }

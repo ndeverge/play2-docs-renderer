@@ -55,8 +55,11 @@ object GithubTree {
   (__ \ "url").read[String]
 		  )(GithubTree)
   
-  def parse(value: String): JsResult[GithubTree] = {
-    Json.parse(value).validate[GithubTree]
+  def parse(value: String): Option[GithubTree] = {
+    Json.parse(value).validate[GithubTree].fold(
+        valid ={ githubTree => Some(githubTree)},
+        invalid= {error => None}
+       )
   }
 
   //FIXME: use the Github API
