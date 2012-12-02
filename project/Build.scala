@@ -16,7 +16,8 @@ object ApplicationBuild extends Build {
 
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
-    // Add your own project settings here      
+	  // add a resources directory for the test scope
+      resourceDirectory in Test <<= baseDirectory / "test/resources"
   )
 
 }

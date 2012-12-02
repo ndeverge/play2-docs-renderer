@@ -5,6 +5,7 @@ import play.api.test._
 import play.api.test.Helpers._
 import play.api.libs.json._
 import github.GithubTree._
+import org.specs2.matcher._
 
 /**
  * Add your spec here.
@@ -69,6 +70,18 @@ class GithubTreeSpec extends Specification {
 
       GithubTree.findPath("JavaHome") must beEqualTo(Some("/javaGuide"))
 
+    }
+    
+    lazy val sourceTree = io.Source.fromInputStream(getClass.getResourceAsStream("/githubSourceTree.json")).mkString
+    
+    "the json resource for test should be readable" in {
+      sourceTree must contain("sha")
+    }
+    
+    "parse the string as a Json object" in {
+      val parsed = GithubTree.parse(sourceTree)
+       
+      parsed must beAnInstanceOf[JsSuccess[GithubTree]]
     }
 
   }

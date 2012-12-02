@@ -2,7 +2,8 @@ package github
 
 import play.api.libs.json._
 import scala.util.matching.Regex
-
+import play.api.libs.functional.syntax._
+   
 object GithubTree {
 
   def toList(jsonValue: JsValue) = {
@@ -36,10 +37,31 @@ object GithubTree {
   def fetchFileTreeAsJson() = {
     json
   }
+  
+  case class GithubTreeEntry(
+      path: String
+      )
+  
+  case class GithubTree(
+      sha: String,
+      tree: List[GithubTreeEntry],
+      url: String)
+
+  implicit val githubTreeEntryReads: Reads[GithubTreeEntry]  = Json.reads[GithubTreeEntry]
+  
+  implicit val githubTreeReads: Reads[GithubTree]  = (
+  (__ \ "sha").read[String] and
+  (__ \ "tree").read[List[GithubTreeEntry]] and
+  (__ \ "url").read[String]
+		  )(GithubTree)
+  
+  def parse(value: String): JsResult[GithubTree] = {
+    Json.parse(value).validate[GithubTree]
+  }
 
   //FIXME: use the Github API
   //https://api.github.com/repos/playframework/Play20/git/trees/46d04362930b6fbde655aac14c1f24881c6cd451?recursive=1
-
+  
   // https://github.com/playframework/Play20/tree-list/794a9e550745165c9e7f7573799e6b75c030161c
   val json = """
   {
