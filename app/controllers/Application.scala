@@ -15,7 +15,7 @@ object Application extends Controller {
     Redirect(routes.Application.render("Home"))
   }
 
-  def render(page: String) = Action { implicit request =>
+  def render(page: String) = Action {
     Async {
       GithubTree.findPath(page).flatMap(pageFound =>
         pageFound match {

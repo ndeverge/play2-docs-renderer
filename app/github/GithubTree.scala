@@ -59,7 +59,7 @@ object GithubTree {
 
   private def fetchLastCommitSha() : Future[String] = {
     WS.url(conf.getString("github.play2.lastCommit").get)
-    .get.map(r => (r.json(0) \ "commit" \ "tree" \ "sha").as[String])
+      .get.map(r => (r.json(0) \ "commit" \ "tree" \ "sha").as[String])
   }
 
 }
