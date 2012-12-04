@@ -18,7 +18,6 @@ Current build status (stucked at the moment due to a BuildHive/SBT issue): [![Bu
 
 ## TODOs
 
-* Use the Github API to look for the file tree (<ouch>currently it is using a hard coded list of files</ouch>)
 * Navigate through branches and tags (actually, you can only see master)
 * Render images (ex: https://github.com/playframework/Play20/blob/master/documentation/manual/detailledTopics/production/Production.md)
 * Fulltext search
