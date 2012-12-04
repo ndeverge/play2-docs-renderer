@@ -12,7 +12,7 @@ import play.api.cache.Cache
 object GithubTree {
 
   private lazy val conf = current.configuration
-  private lazy val cacheDuration = 60 * 10
+  private lazy val cacheDuration = conf.getInt("github.play2.cache").getOrElse(600)
 
   def findPath(link: String): Future[Option[String]] = {
     getDocumentationsPagesFromCache().map{files =>

@@ -2,18 +2,14 @@ package controllers
 
 import play.api._
 import play.api.mvc._
-import play.api.data.Form
-import play.api.data.Forms._
-import play.api.libs.ws.WS
 import scala.concurrent.Future
 import play.api.libs.concurrent.Execution.Implicits._
 import markdown.PegdownConverter._
-import github.GithubTree
+import github._
 
 object Application extends Controller {
 
-  val MANUAL_BASE_URL = "https://raw.github.com/playframework/Play20/master/documentation/manual/"
-  val EDIT_BASE_URL = "https://github.com/playframework/Play20/edit/master/documentation/manual"
+  lazy val conf = play.api.Play.current.configuration
 
   def index = Action {
     Redirect(routes.Application.render("Home"))
@@ -31,17 +27,17 @@ object Application extends Controller {
   }
 
   private def showPage(path: String, pageName: String) : Future[Result] = {
-    val sidebarFuture = WS.url(MANUAL_BASE_URL + path + "/_Sidebar.md").get()
-    val pageFuture = WS.url(MANUAL_BASE_URL + path + "/" + pageName + ".md").get()
+    val sidebarFuture = GithubPage.fetchPageFromCache(path + "/_Sidebar.md")
+    val pageFuture = GithubPage.fetchPageFromCache(path + "/" + pageName + ".md")
     val sections = for (sidebar <- sidebarFuture; page <- pageFuture) yield (sidebar, page)
 
     sections.map(_ match {
       case (sidebar, page) => {
         page.status match {
           case 200 => {
-            val editLink = EDIT_BASE_URL + path + "/" + pageName + ".md"
-            val html = markdown2html(page).getOrElse("")
-            val sidebarHtml = if (sidebar.status == 200) markdown2html(sidebar).getOrElse("") else ""
+            val editLink = conf.getString("github.play2.editUrl").get + path + "/" + pageName + ".md"
+            val html = markdown2html(page.body).getOrElse("")
+            val sidebarHtml = if (sidebar.status == 200) markdown2html(sidebar.body).getOrElse("") else ""
             Ok(views.html.main(html, sidebarHtml, editLink))
           }
           case _ => Status(page.status)
