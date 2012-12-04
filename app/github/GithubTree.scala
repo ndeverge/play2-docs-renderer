@@ -4,16 +4,18 @@ import play.api.libs.json._
 import scala.util.matching.Regex
 import play.api.libs.functional.syntax._
 import play.api.libs.ws.WS
-import play.api.Play
+import play.api.Play.current
 import play.api.libs.concurrent.Execution.Implicits._
 import scala.concurrent.Future
+import play.api.cache.Cache
 
 object GithubTree {
 
-  private lazy val conf = Play.current.configuration
+  private lazy val conf = current.configuration
+  private lazy val cacheDuration = 60 * 10
 
   def findPath(link: String): Future[Option[String]] = {
-    getDocumentationsPages().map{files =>
+    getDocumentationsPagesFromCache().map{files =>
       val matchFiles = files.filter(_.contains(link))
       cleanPath(matchFiles, link)
     }
@@ -44,6 +46,10 @@ object GithubTree {
       val filepaths = (tree \ "paths").as[List[String]]
       filepaths.filter(path => path.endsWith(".md"))
     }
+  }
+
+  def getDocumentationsPagesFromCache(): Future[List[String]] = {
+    Cache.getOrElse("github.play2.treelist", cacheDuration)(getDocumentationsPages())
   }
 
   private def fetchGithubTree(sha: String): Future[JsValue] = {
