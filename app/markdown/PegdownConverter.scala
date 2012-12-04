@@ -6,30 +6,37 @@ import controllers.routes
 
 object PegdownConverter extends MarkdownConverter {
 
-  def markdown2html(input: String): Option[String] = {
+  def markdown2html(input: String, path: String): Option[String] = {
     input match {
       case null => None
-      case _ => Some(pegdownConversion(input))
+      case _ => Some(pegdownConversion(input, path))
     }
   }
 
-  private def pegdownConversion(input: String): String = {
+  private def pegdownConversion(input: String, path: String): String = {
 
     // TODO: it may be not thread safe ?
-    new PegDownProcessor(Extensions.FENCED_CODE_BLOCKS + Extensions.WIKILINKS).markdownToHtml(input, new GithubLinkRenderer())
+    new PegDownProcessor(Extensions.FENCED_CODE_BLOCKS + Extensions.WIKILINKS).markdownToHtml(input, new GithubLinkRenderer(path))
 
   }
 
 }
 
-class GithubLinkRenderer extends org.pegdown.LinkRenderer {
+class GithubLinkRenderer(val path: String) extends org.pegdown.LinkRenderer {
 
+  lazy val conf = play.api.Play.current.configuration
+  lazy val baseUrl = conf.getString("github.play2.baseUrl").get + path
+  
   override def render(node: WikiLinkNode): LinkRenderer.Rendering = {
 
     val text = node.getText
-    text.split("[|]") match {
-      case Array(text, href) => buildLink(href, text)
-      case _ => buildLink("#", text + " (broken link)")
+    if (isImage(text)) {
+      buildImage(text)
+    } else {
+      text.split("[|]") match {
+        case Array(text, href) => buildLink(href, text)
+        case _ => buildLink("#", text + " (broken link)")
+      }
     }
   }
 
@@ -41,5 +48,15 @@ class GithubLinkRenderer extends org.pegdown.LinkRenderer {
       val link = routes.Application.render(href.trim).url
       new LinkRenderer.Rendering(link, text.trim)
     }
+  }
+
+  private def buildImage(href: String) = {
+    val url = if (href.startsWith("http")) href
+    else "%s/%s".format(baseUrl, href)
+    new LinkRenderer.Rendering(url, """<img src="%s" alt="" />""".format(url)).withAttribute("target", "blank")
+  }
+
+  private def isImage(path: String): Boolean = {
+    Seq("jpg", "jpeg", "png", "gif").exists(path.endsWith(_))
   }
 }
