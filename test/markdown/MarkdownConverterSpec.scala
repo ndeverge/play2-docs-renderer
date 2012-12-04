@@ -19,7 +19,7 @@ class MarkdownConverterSpec extends Specification {
 
     "fail on null string" in {
 
-      PegdownConverter.markdown2html(null) must beNull
+      PegdownConverter.markdown2html(null: String) must beNull
     }
 
     "return a HTML paragraph given a simple string" in {

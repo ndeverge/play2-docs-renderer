@@ -13,6 +13,10 @@ object PegdownConverter extends MarkdownConverter {
     }
   }
 
+  def markdown2html(input: play.api.libs.ws.Response): String = {
+    markdown2html(input.body)
+  }
+
   private def pegdownConversion(input: String): String = {
 
     // TODO: it may be not thread safe ?
