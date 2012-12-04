@@ -6,15 +6,11 @@ import controllers.routes
 
 object PegdownConverter extends MarkdownConverter {
 
-  def markdown2html(input: String): String = {
+  def markdown2html(input: String): Option[String] = {
     input match {
-      case null => null
-      case _ => pegdownConversion(input)
+      case null => None
+      case _ => Some(pegdownConversion(input))
     }
-  }
-
-  def markdown2html(input: play.api.libs.ws.Response): String = {
-    markdown2html(input.body)
   }
 
   private def pegdownConversion(input: String): String = {

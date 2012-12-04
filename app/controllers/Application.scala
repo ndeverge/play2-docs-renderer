@@ -40,8 +40,8 @@ object Application extends Controller {
         page.status match {
           case 200 => {
             val editLink = EDIT_BASE_URL + path + "/" + pageName + ".md"
-            val html = markdown2html(page)
-            val sidebarHtml = if (sidebar.status == 200) markdown2html(sidebar) else ""
+            val html = markdown2html(page).getOrElse("")
+            val sidebarHtml = if (sidebar.status == 200) markdown2html(sidebar).getOrElse("") else ""
             Ok(views.html.main(html, sidebarHtml, editLink))
           }
           case _ => Status(page.status)

@@ -19,14 +19,14 @@ class MarkdownConverterSpec extends Specification {
 
     "fail on null string" in {
 
-      PegdownConverter.markdown2html(null: String) must beNull
+      PegdownConverter.markdown2html(null: String) must beNone
     }
 
     "return a HTML paragraph given a simple string" in {
 
       val text = "A simple string"
 
-      doConvert(text) must beEqualTo("<p>" + text + "</p>")
+      doConvert(text) must beSome("<p>" + text + "</p>")
     }
 
     "return a bold HTML string given a bold markdown string" in {
@@ -34,7 +34,7 @@ class MarkdownConverterSpec extends Specification {
       val text = "A bold string"
       val boldText = "**" + text + "**"
 
-      doConvert(boldText) must beEqualTo("<p><strong>" + text + "</strong></p>")
+      doConvert(boldText) must beSome("<p><strong>" + text + "</strong></p>")
     }
 
   }
