@@ -19,7 +19,6 @@ Current build status (stucked at the moment due to a BuildHive/SBT issue): [![Bu
 ## TODOs
 
 * Navigate through branches and tags (actually, you can only see master)
-* Render images (ex: https://github.com/playframework/Play20/blob/master/documentation/manual/detailledTopics/production/Production.md)
 * Fulltext search
 * Search for broken links
 
