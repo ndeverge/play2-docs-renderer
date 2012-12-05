@@ -12,14 +12,14 @@ import play.api.test.Helpers._
 class MarkdownConverterSpec extends Specification {
 
   private def doConvert(text: String) = {
-    PegdownConverter.markdown2html(text)
+    PegdownConverter.markdown2html(text, "PATH")
   }
 
   "MarkdownConverter" should {
 
     "fail on null string" in {
 
-      PegdownConverter.markdown2html(null: String) must beNone
+      doConvert(null: String) must beNone
     }
 
     "return a HTML paragraph given a simple string" in {
@@ -35,6 +35,13 @@ class MarkdownConverterSpec extends Specification {
       val boldText = "**" + text + "**"
 
       doConvert(boldText) must beSome("<p><strong>" + text + "</strong></p>")
+    }
+    
+    "return an image with a blank link for image tag" in new WithApplication {
+      val text = "[[images/hello.png]]"
+      val result = doConvert(text)
+      result must beSome
+      result.get must contain("""<img src="https://raw.github.com/playframework/Play20/master/documentation/manual/PATH/images/hello.png" alt="" />""")
     }
 
   }
