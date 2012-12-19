@@ -43,6 +43,13 @@ class MarkdownConverterSpec extends Specification {
       result must beSome
       result.get must contain("""<img src="https://raw.github.com/playframework/Play20/master/documentation/manual/PATH/images/hello.png" alt="" />""")
     }
+    
+    "return a correct Url" in {
+      val text = "[[nginx| http://wiki.nginx.org/Main]]"
+      val result = doConvert(text)
+      result must beSome
+      result must beSome("""<p><a href="http://wiki.nginx.org/Main">nginx</a></p>""")
+    }
 
   }
 }
