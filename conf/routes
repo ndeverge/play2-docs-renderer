@@ -4,7 +4,8 @@
 
 # Home page
 GET     /                           controllers.Application.index
-GET     /render/:page	            controllers.Application.render(page: String)
+GET     /render/:page	            controllers.Application.render(branch = "master", page: String)
+GET     /render/:branch/:page	            controllers.Application.render(branch: String, page: String)
 
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file               controllers.Assets.at(path="/public", file)

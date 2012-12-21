@@ -1,21 +1,23 @@
 package github
 
-import play.api.libs.json._
-import scala.util.matching.Regex
-import play.api.libs.functional.syntax._
-import play.api.libs.ws.WS
-import play.api.Play.current
-import play.api.libs.concurrent.Execution.Implicits._
+import scala.Option.option2Iterable
+import scala.Some.apply
 import scala.concurrent.Future
+
+import play.api.Play.current
 import play.api.cache.Cache
+import play.api.libs.concurrent.Execution.Implicits.defaultContext
+import play.api.libs.json.JsArray
+import play.api.libs.json.JsValue
+import play.api.libs.ws.WS
 
 object GithubTree {
 
   private lazy val conf = current.configuration
   private lazy val cacheDuration = conf.getInt("github.play2.cache").getOrElse(600)
 
-  def findPath(link: String): Future[Option[String]] = {
-    getDocumentationsPagesFromCache().map{files =>
+  def findPath(branch: String, link: String): Future[Option[String]] = {
+    getDocumentationsPagesFromCache(branch).map{files =>
       val matchFiles = files.filter(_.contains(link))
       cleanPath(matchFiles, link)
     }
@@ -36,9 +38,9 @@ object GithubTree {
     }
   }
 
-  def getDocumentationsPages(): Future[List[String]] = {
+  def getDocumentationsPages(branch: String): Future[List[String]] = {
     val treeFuture =
-      for (sha <- fetchLastCommitSha();
+      for (sha <- fetchLastCommitShaForBranch(branch);
            githubTree <- fetchGithubTree(sha))
       yield (githubTree)
 
@@ -48,8 +50,8 @@ object GithubTree {
     }
   }
 
-  def getDocumentationsPagesFromCache(): Future[List[String]] = {
-    Cache.getOrElse("github.play2.treelist", cacheDuration)(getDocumentationsPages())
+  def getDocumentationsPagesFromCache(branch: String): Future[List[String]] = {
+    Cache.getOrElse("github.play2.treelist." + branch, cacheDuration)(getDocumentationsPages(branch))
   }
 
   private def fetchGithubTree(sha: String): Future[JsValue] = {
@@ -57,9 +59,22 @@ object GithubTree {
       .get.map(_.json)
   }
 
-  private def fetchLastCommitSha() : Future[String] = {
-    WS.url(conf.getString("github.play2.lastCommit").get)
-      .get.map(r => (r.json(0) \ "commit" \ "tree" \ "sha").as[String])
+  private def fetchLastCommitShaForBranch(branch: String) : Future[String] = {
+    WS.url(conf.getString("github.play2.branches").get)
+      .get.map(r => 
+        filterByBranch(r.json, branch) match {
+          case Some(e) => (e \ "commit" \ "sha").as[String] 
+          case None => ""
+        } 
+      )
+  }
+  
+  def filterByBranch(json: JsValue, branch: String) = {
+   val filtered = json.asInstanceOf[JsArray].value.filter(p => ((p \ "name").toString.equals("\"" + branch + "\"")))
+   filtered match {
+     case Seq() => None
+     case head :: tail => Some(head)
+   }
   }
 
 }

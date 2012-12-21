@@ -16,7 +16,7 @@ object GithubPage {
   }
 
   def fetchPage(url: String) : Future[CachedPage] = {
-    WS.url(conf.getString("github.play2.baseUrl").get + url).get.map(response => 
+    WS.url(conf.getString("github.play2.baseUrl").get.format("master") + url).get.map(response => 
         CachedPage(response.status, response.body))
   }
 

@@ -12,12 +12,12 @@ object Application extends Controller {
   lazy val conf = play.api.Play.current.configuration
 
   def index = Action {
-    Redirect(routes.Application.render("Home"))
+    Redirect(routes.Application.render("master", "Home"))
   }
 
-  def render(page: String) = Action {
+  def render(branch: String, page: String) = Action {
     Async {
-      GithubTree.findPath(page).flatMap(pageFound =>
+      GithubTree.findPath(branch, page).flatMap(pageFound =>
         pageFound match {
           case None => Future(NotFound("Not found on Github"))
           case Some(path) => showPage(path, page)
