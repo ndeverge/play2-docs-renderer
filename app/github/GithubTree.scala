@@ -70,11 +70,18 @@ object GithubTree {
   }
   
   def filterByBranch(json: JsValue, branch: String) = {
-   val filtered = json.asInstanceOf[JsArray].value.filter(p => ((p \ "name").toString.equals("\"" + branch + "\"")))
-   filtered match {
-     case Seq() => None
-     case head :: tail => Some(head)
+   json match {
+     case array: JsArray => {
+       val filteredByName = array.value.filter(p => ((p \ "name").toString.equals("\"" + branch + "\"")))
+       filteredByName match {
+	     case Seq() => None
+	     case head :: tail => Some(head)
+	   }
+     }
+     case _ => None
    }
+   
+   
   }
 
 }
