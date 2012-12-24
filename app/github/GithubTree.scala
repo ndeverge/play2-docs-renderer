@@ -39,9 +39,11 @@ object GithubTree {
   }
 
   def getDocumentationsPages(branch: String): Future[List[String]] = {
+    
     val treeFuture =
-      for (sha <- fetchLastCommitShaForBranch(branch);
-           githubTree <- fetchGithubTree(sha))
+      for (shaFromBranch <- fetchLastCommitShaForBranch(branch);
+    	   shaFromTag <- fetchLastCommitShaForTag(branch);
+           githubTree <- fetchGithubTree(Seq(shaFromBranch, shaFromTag)))
       yield (githubTree)
 
     treeFuture.map{ tree =>
@@ -54,22 +56,35 @@ object GithubTree {
     Cache.getOrElse("github.play2.treelist." + branch, cacheDuration)(getDocumentationsPages(branch))
   }
 
-  private def fetchGithubTree(sha: String): Future[JsValue] = {
-    WS.url(conf.getString("github.play2.dir").get.format(sha))
-      .get.map(_.json)
+  private def fetchGithubTree(shas: Seq[Option[String]]): Future[JsValue] = {
+    // FIXME : get rid of these null...
+    val v = shas.map(sha => sha match {
+		      case Some(sha) => WS.url(conf.getString("github.play2.dir").get.format(sha)).get.map(_.json)
+		      case None => null
+		    })
+    v.filter(p => p != null)(0)
   }
 
-  private def fetchLastCommitShaForBranch(branch: String) : Future[String] = {
-    WS.url(conf.getString("github.play2.branches").get)
+  
+  private def fetchLastCommitShaForTag(branch: String) : Future[Option[String]] = {
+    fetchLastCommitSha("github.play2.tags", branch)
+  }
+  
+  private def fetchLastCommitShaForBranch(branch: String) : Future[Option[String]] = {
+    fetchLastCommitSha("github.play2.branches", branch)
+  }
+  
+  private def fetchLastCommitSha(githubCall: String, branch: String) : Future[Option[String]] = {
+    WS.url(conf.getString(githubCall).get)
       .get.map(r => 
-        filterByBranch(r.json, branch) match {
-          case Some(e) => (e \ "commit" \ "sha").as[String] 
-          case None => ""
+        filterByName(r.json, branch) match {
+          case Some(e) => Some((e \ "commit" \ "sha").as[String])
+          case None => None
         } 
       )
   }
   
-  def filterByBranch(json: JsValue, branch: String) = {
+  def filterByName(json: JsValue, branch: String) = {
    json match {
      case array: JsArray => {
        val filteredByName = array.value.filter(p => ((p \ "name").toString.equals("\"" + branch + "\"")))

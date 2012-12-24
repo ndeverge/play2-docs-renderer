@@ -11,12 +11,12 @@ object GithubPage {
   private lazy val conf = current.configuration
   private lazy val cacheDuration = conf.getInt("github.play2.cache").getOrElse(600)
 
-  def fetchPageFromCache(url: String): Future[CachedPage] = {
-    Cache.getOrElse(url, cacheDuration)(fetchPage(url))
+  def fetchPageFromCache(branch: String, url: String): Future[CachedPage] = {
+    Cache.getOrElse(url, cacheDuration)(fetchPage(branch, url))
   }
 
-  def fetchPage(url: String) : Future[CachedPage] = {
-    WS.url(conf.getString("github.play2.baseUrl").get.format("master") + url).get.map(response => 
+  def fetchPage(branch: String, url: String) : Future[CachedPage] = {
+    WS.url(conf.getString("github.play2.baseUrl").get.format(branch) + url).get.map(response => 
         CachedPage(response.status, response.body))
   }
 

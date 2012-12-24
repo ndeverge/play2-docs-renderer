@@ -20,15 +20,15 @@ object Application extends Controller {
       GithubTree.findPath(branch, page).flatMap(pageFound =>
         pageFound match {
           case None => Future(NotFound("Not found on Github"))
-          case Some(path) => showPage(path, page)
+          case Some(path) => showPage(branch, path, page)
         }
       )
     }
   }
 
-  private def showPage(path: String, pageName: String) : Future[Result] = {
-    val sidebarFuture = GithubPage.fetchPageFromCache(path + "/_Sidebar.md")
-    val pageFuture = GithubPage.fetchPageFromCache(path + "/" + pageName + ".md")
+  private def showPage(branch: String, path: String, pageName: String) : Future[Result] = {
+    val sidebarFuture = GithubPage.fetchPageFromCache(branch, path + "/_Sidebar.md")
+    val pageFuture = GithubPage.fetchPageFromCache(branch, path + "/" + pageName + ".md")
     val sections = for (sidebar <- sidebarFuture; page <- pageFuture) yield (sidebar, page)
 
     sections.map(_ match {

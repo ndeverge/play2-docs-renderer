@@ -59,7 +59,12 @@ class GithubTreeSpec extends Specification {
     
     "find the sha by filtering the json using the branch name" in {
       val expected = Json.parse(branchesAsJson).asInstanceOf[JsArray](2)
-      GithubTree.filterByBranch(Json.parse(branchesAsJson), "master") must beSome(expected)
+      GithubTree.filterByName(Json.parse(branchesAsJson), "master") must beSome(expected)
+    }
+    
+    "find the sha by filtering the json using the tag name" in {
+      val expected = Json.parse(tagsAsJson).asInstanceOf[JsArray](2)
+      GithubTree.filterByName(Json.parse(tagsAsJson), "2.1-RC1") must beSome(expected)
     }
     
   }
@@ -107,5 +112,37 @@ class GithubTreeSpec extends Specification {
   }
 ]
     
+    """
+    
+    val tagsAsJson = """
+    [
+  {
+    "zipball_url": "https://github.com/playframework/Play20/archive/2.0-RC5.zip",
+    "commit": {
+      "sha": "5698130921a6129b4ca24c02c1e2645d2e1e97e4",
+      "url": "https://api.github.com/repos/playframework/Play20/commits/5698130921a6129b4ca24c02c1e2645d2e1e97e4"
+    },
+    "name": "2.0-RC5",
+    "tarball_url": "https://github.com/playframework/Play20/archive/2.0-RC5.tar.gz"
+  },
+  {
+    "zipball_url": "https://github.com/playframework/Play20/archive/2.0-RC1.zip",
+    "commit": {
+      "sha": "93f0169f10b6fe0788a565d85692857866eb68b1",
+      "url": "https://api.github.com/repos/playframework/Play20/commits/93f0169f10b6fe0788a565d85692857866eb68b1"
+    },
+    "name": "2.0-RC1",
+    "tarball_url": "https://github.com/playframework/Play20/archive/2.0-RC1.tar.gz"
+  },
+  {
+    "zipball_url": "https://github.com/playframework/Play20/archive/2.1-RC1.zip",
+    "commit": {
+      "sha": "ba571ef1c99ec94c94d9eab9986a4c5c6dfa3b3e",
+      "url": "https://api.github.com/repos/playframework/Play20/commits/ba571ef1c99ec94c94d9eab9986a4c5c6dfa3b3e"
+    },
+    "name": "2.1-RC1",
+    "tarball_url": "https://github.com/playframework/Play20/archive/2.1-RC1.tar.gz"
+  }
+]  
     """
 }
