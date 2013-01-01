@@ -57,12 +57,11 @@ object GithubTree {
   }
 
   private def fetchGithubTree(shas: Seq[Option[String]]): Future[JsValue] = {
-    // FIXME : get rid of these null...
-    val v = shas.map(sha => sha match {
-		      case Some(sha) => WS.url(conf.getString("github.play2.dir").get.format(sha)).get.map(_.json)
-		      case None => null
-		    })
-    v.filter(p => p != null)(0)
+    val shasFound = shas.flatten
+    
+    val sha = shasFound(0) // take the first hoping there's one...
+    
+    WS.url(conf.getString("github.play2.dir").get.format(sha)).get.map(_.json)
   }
 
   
