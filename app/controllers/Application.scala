@@ -36,9 +36,9 @@ object Application extends Controller {
         page.status match {
           case 200 => {
             val editLink = conf.getString("github.play2.editUrl").get + path + "/" + pageName + ".md"
-            val html = markdown2html(page.body, path).getOrElse("")
-            val sidebarHtml = if (sidebar.status == 200) markdown2html(sidebar.body, path).getOrElse("") else ""
-            Ok(views.html.main(html, sidebarHtml, editLink))
+            val html = markdown2html(page.body, branch, path).getOrElse("")
+            val sidebarHtml = if (sidebar.status == 200) markdown2html(sidebar.body, branch, path).getOrElse("") else ""
+            Ok(views.html.main(html, sidebarHtml, editLink, branch))
           }
           case _ => Status(page.status)
         }

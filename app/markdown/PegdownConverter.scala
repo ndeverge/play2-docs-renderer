@@ -6,26 +6,26 @@ import controllers.routes
 
 object PegdownConverter extends MarkdownConverter {
 
-  def markdown2html(input: String, path: String): Option[String] = {
+  def markdown2html(input: String, branch: String, path: String): Option[String] = {
     input match {
       case null => None
-      case _ => Some(pegdownConversion(input, path))
+      case _ => Some(pegdownConversion(input, branch, path))
     }
   }
 
-  private def pegdownConversion(input: String, path: String): String = {
+  private def pegdownConversion(input: String, branch: String, path: String): String = {
 
     // TODO: it may be not thread safe ?
-    new PegDownProcessor(Extensions.FENCED_CODE_BLOCKS + Extensions.WIKILINKS).markdownToHtml(input, new GithubLinkRenderer(path))
+    new PegDownProcessor(Extensions.FENCED_CODE_BLOCKS + Extensions.WIKILINKS).markdownToHtml(input, new GithubLinkRenderer(branch, path))
 
   }
 
 }
 
-class GithubLinkRenderer(val path: String) extends org.pegdown.LinkRenderer {
+class GithubLinkRenderer(val branch: String, val path: String) extends org.pegdown.LinkRenderer {
 
   lazy val conf = play.api.Play.current.configuration
-  lazy val baseUrl = conf.getString("github.play2.baseUrl").get + path
+  lazy val baseUrl = conf.getString("github.play2.baseUrl").get.format(branch) + path
   
   override def render(node: WikiLinkNode): LinkRenderer.Rendering = {
 
@@ -45,7 +45,7 @@ class GithubLinkRenderer(val path: String) extends org.pegdown.LinkRenderer {
     if (href.startsWith("http")) {
       new LinkRenderer.Rendering(href, text.trim)
     } else {
-      val link = routes.Application.render("master", href.trim).url
+      val link = routes.Application.render(branch, href.trim).url
       new LinkRenderer.Rendering(link, text.trim)
     }
   }

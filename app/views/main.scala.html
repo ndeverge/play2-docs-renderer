@@ -1,4 +1,4 @@
-@(body: String, sidebar: String, editLink: String)
+@(body: String, sidebar: String, editLink: String, branch: String)
 
 <!DOCTYPE html>
 
@@ -49,7 +49,7 @@
     </head>
     <body>
     <header>
-        <a href="/" id="logo"><img src="http://playframework.org/assets/images/logo.png"></a>
+        <a href="@routes.Application.render(branch, "Home")" id="logo"><img src="http://playframework.org/assets/images/logo.png"></a>
         <nav>
         	<a href="https://github.com/ndeverge/play2-docs-renderer">Warning: this documentation is generated from the master source files</a>
         </nav>
@@ -57,7 +57,7 @@
     </header>
     <section id="top">
 	    <div class="wrapper">
-	        <h1><a href="/">Manual, tutorials &amp; references</a></h1>
+	        <h1><a href="@routes.Application.render(branch, "Home")">Manual, tutorials &amp; references</a></h1>
 	    </div>
 	</section>
         <div id="content" class="wrapper doc">
