@@ -31,7 +31,7 @@ class ApplicationSpec extends Specification {
     "render a markdown html" in {
 
       running(FakeApplication()) {
-        val markdownRenderer = route(FakeRequest(GET, "/render/Home")).get
+        val markdownRenderer = route(FakeRequest(GET, "/render/master/Home")).get
 
         status(markdownRenderer) must equalTo(OK)
         contentType(markdownRenderer) must beSome.which(_ == "text/html")
