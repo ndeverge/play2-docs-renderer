@@ -44,11 +44,18 @@ class MarkdownConverterSpec extends Specification {
       result.get must contain("""<img src="https://raw.github.com/playframework/Play20/%s/documentation/manual/PATH/images/hello.png" alt="" />""")
     }
     
-    "return a correct Url" in {
+    "return a correct Url when providing an Url with spaces" in {
       val text = "[[nginx| http://wiki.nginx.org/Main]]"
       val result = doConvert(text)
       result must beSome
       result must beSome("""<p><a href="http://wiki.nginx.org/Main">nginx</a></p>""")
+    }
+    
+    "return a correct Url when providing just the Url without name" in {
+      val text = "[[https://play.lighthouseapp.com/projects/82401-play-20/overview]]"
+      val result = doConvert(text)
+      result must beSome
+      result must beSome("""<p><a href="https://play.lighthouseapp.com/projects/82401-play-20/overview">https://play.lighthouseapp.com/projects/82401-play-20/overview</a></p>""")
     }
 
   }

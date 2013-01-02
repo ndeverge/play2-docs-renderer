@@ -35,7 +35,7 @@ class GithubLinkRenderer(val path: String) extends org.pegdown.LinkRenderer {
     } else {
       text.split("[|]") match {
         case Array(text, href) => buildLink(href.trim(), text)
-        case _ => buildLink("#", text + " (broken link)")
+        case _ => buildLink(text, text)
       }
     }
   }
