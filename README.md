@@ -16,6 +16,10 @@ Do not hesitate to submit a pull request of fill an issue for enhancements :-)
 
 Current build status (stucked at the moment due to a BuildHive/SBT issue): [![Build Status](https://buildhive.cloudbees.com/job/ndeverge/job/play2-docs-renderer/badge/icon)](https://buildhive.cloudbees.com/job/ndeverge/job/play2-docs-renderer/)
 
+## TODOs
+
+Take a look at the Enhancements in the [Github Issues tab](https://github.com/ndeverge/play2-docs-renderer/issues?labels=enhancement&page=1&state=open).
+
 ## License
 
                 DO WHAT THE FUCK YOU WANT TO PUBLIC LICENSE
