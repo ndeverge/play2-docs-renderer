@@ -59,7 +59,7 @@ class GithubTreeSpec extends Specification {
     
     "find '/build/' when supplying 'Build'" in new WithApplication {
       await(GithubTree.findPath("master", "Build")) must beSome("/build")
-    }.pendingUntilFixed
+    }.pendingUntilFixed("Issue #12")
     
     "find the sha by filtering the json using the branch name" in {
       val expected = Json.parse(branchesAsJson).asInstanceOf[JsArray](2)
