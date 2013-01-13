@@ -57,6 +57,10 @@ class GithubTreeSpec extends Specification {
       await(GithubTree.findPath("master", "JavaHome")) must beSome("/javaGuide")
     }
     
+    "find '/build/' when supplying 'Build'" in new WithApplication {
+      await(GithubTree.findPath("master", "Build")) must beSome("/build")
+    }.pendingUntilFixed
+    
     "find the sha by filtering the json using the branch name" in {
       val expected = Json.parse(branchesAsJson).asInstanceOf[JsArray](2)
       GithubTree.filterByName(Json.parse(branchesAsJson), "master") must beSome(expected)

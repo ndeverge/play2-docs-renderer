@@ -45,7 +45,7 @@ object GithubTree {
     	   shaFromTag <- fetchLastCommitShaForTag(branch);
            githubTree <- fetchGithubTree(Seq(shaFromBranch, shaFromTag)))
       yield (githubTree)
-
+      
     treeFuture.map{ tree =>
       val filepaths = (tree \ "paths").as[List[String]]
       filepaths.filter(path => path.endsWith(".md"))
@@ -65,8 +65,8 @@ object GithubTree {
   }
 
   
-  private def fetchLastCommitShaForTag(branch: String) : Future[Option[String]] = {
-    fetchLastCommitSha("github.play2.tags", branch)
+  private def fetchLastCommitShaForTag(tag: String) : Future[Option[String]] = {
+    fetchLastCommitSha("github.play2.tags", tag)
   }
   
   private def fetchLastCommitShaForBranch(branch: String) : Future[Option[String]] = {
