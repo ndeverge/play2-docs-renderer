@@ -14,7 +14,7 @@ Do not hesitate to submit a pull request of fill an issue for enhancements :-)
 
 ## Continuous integration
 
-Current build status (stucked at the moment due to a BuildHive/SBT issue): [![Build Status](https://buildhive.cloudbees.com/job/ndeverge/job/play2-docs-renderer/badge/icon)](https://buildhive.cloudbees.com/job/ndeverge/job/play2-docs-renderer/)
+Current build status from Travis CI: [![Build Status](https://travis-ci.org/ndeverge/play2-docs-renderer.png?branch=master)](https://travis-ci.org/ndeverge/play2-docs-renderer)
 
 ## TODOs
 
