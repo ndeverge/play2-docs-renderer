@@ -21,6 +21,21 @@
 		<style type="text/css">
 		    @@import "http://twitter.github.com/bootstrap/assets/js/google-code-prettify/prettify.css";
 		    
+		    header h1 {
+		    	position: absolute;
+				right: 50%;
+				margin: 0 -480px;
+		    	font-size: 21px;
+  				font-weight: 500;
+		    }
+		    
+		    header p {
+		    	position: absolute;
+				right: 50%;
+				margin: 30px -480px;
+  				font-weight: 500;
+		    }
+		    
 		    .prettyprint {
 		    	padding: 1px;
 		    	border: 0px;
@@ -50,9 +65,9 @@
     <body>
     <header>
         <a href="@routes.Application.render(branch, "Home")" id="logo"><img src="http://playframework.org/assets/images/logo.png"></a>
-        <nav>
-        	<a href="https://github.com/ndeverge/play2-docs-renderer">Warning: this documentation is generated from the master source files</a>
-        </nav>
+        <h1>Warning: This a edge documentation, based on the current <a href="http://github.com/playframework/Play20/tree/master/">master</a> branch.</h1>
+        <p>If you are looking for the ones for the stable version, please check <a href="http://www.playframework.org/documentation/">the released documentation</a> instead.
+        </p>
         <a href="@editLink"><img style="position: absolute; top: 0; right: 0; border: 0;" src="@routes.Assets.at("images/edit.png")" alt="Edit this content directly in Github"></a>
     </header>
     <section id="top">
