@@ -4,12 +4,21 @@
 
 <html>
     <head>
-        <title>Play documentation (SNAPSHOT)</title>
-        <link rel="stylesheet" media="screen" href="http://www.playframework.org/assets/stylesheets/main.css">
-        <link rel="stylesheet" media="screen" href="http://www.playframework.org/assets/stylesheets/responsive.css">
-        <link rel="shortcut icon" type="image/png" href="@routes.Assets.at("images/favicon.png")">
-        <script src="@routes.Assets.at("javascripts/jquery-1.7.1.min.js")" type="text/javascript"></script>
-        <script src="http://www.playframework.org/assets/javascripts/play20.js" type="text/javascript"></script>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <title>Play documentation (EDGE)</title>
+        <meta name="description" content="Playframework edge documentation">
+        <meta name="viewport" content="width=device-width,maximum-scale=1.0;"/>
+        <link href='http://fonts.googleapis.com/css?family=PT+Serif:700italic' rel='stylesheet' type='text/css'>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:700,300' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="http://www.playframework.com/assets/stylus/main.css">
+        <link rel="icon" type="image/png" href="http://www.playframework.com/assets/images/favicon.png"/>
+
+        <!--[if lt IE 9]>
+        <script src="/assets/javascripts/vendor/html5shiv.js"></script>
+        <![endif]-->
+        <script src="http://www.playframework.com/assets/javascripts/vendor/jquery-1.8.2.min.js"></script>
+        <script src="http://www.playframework.com/assets/javascripts/main.js"></script>
         <script type="text/javascript" charset="utf-8" src="http://twitter.github.com/bootstrap/assets/js/google-code-prettify/prettify.js"></script>
         <script type="text/javascript">
 		    $(function(){
@@ -20,15 +29,23 @@
 		</script>
 		<style type="text/css">
 		    @@import "http://twitter.github.com/bootstrap/assets/js/google-code-prettify/prettify.css";
-		    
+
+		    #navigation {
+		    	z-index: 0;
+				border-top: 5px solid #456ED7;
+		    }
+
 		    header h1 {
 		    	position: absolute;
-				right: 50%;
-				margin: 0 -480px;
 		    	font-size: 21px;
   				font-weight: 500;
-		    }
-		    
+  		    }
+
+		    #warning  {
+				right: 50%;
+				margin: 0 -480px;
+  		    }
+
 		    header p {
 		    	position: absolute;
 				right: 50%;
@@ -41,11 +58,11 @@
 		    	border: 0px;
 		    }
 		    
-		    a {
+		    .typo a, article a, aside a {
 		    	color: #456ED7;
 		    }
 		    
-		    a:hover {
+		    .typo a, article a, aside a:hover {
 			  color: #456ED7;
 			}
 		    
@@ -62,28 +79,32 @@
 		    }
 		</style>
     </head>
-    <body>
-    <header>
-        <a href="@routes.Application.render(branch, "Home")" id="logo"><img src="http://playframework.org/assets/images/logo.png"></a>
-        <h1>Warning: This is an edge documentation, based on the current <a href="http://github.com/playframework/Play20/tree/@branch/">@branch</a> branch.</h1>
-        <p>If you are looking for the ones for the stable version, please check <a href="http://www.playframework.org/documentation/">the released documentation</a> instead.
-        </p>
-        <a href="@editLink"><img style="position: absolute; top: 0; right: 0; border: 0;" src="@routes.Assets.at("images/edit.png")" alt="Edit this content directly in Github"></a>
-        <a href="http://github.com/ndeverge/play2-docs-renderer"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png" alt="Fork me on GitHub"></a>
+    <body class="documentation">
+
+    	<header id="navigation">
+            <div class="wrapper">
+                <a href="@routes.Application.render(branch, "Home")" id="logo">Typesafe</a>
+        		<h1 id="warning">Warning: This is an edge documentation, based on the current <a href="http://github.com/playframework/Play20/tree/@branch/">@branch</a> branch.</h1>
+        		<p>If you are looking for the ones for the stable version, please check <a href="http://www.playframework.org/documentation/">the released documentation</a> instead.
+        		</p>
+        
+            </div>
+        </header>
+         <header id="top">
+        <div class="wrapper">
+            <h1>(Edge) Documentation</h1>
+        </div>
     </header>
-    <section id="top">
-	    <div class="wrapper">
-	        <h1><a href="@routes.Application.render(branch, "Home")">Manual, tutorials &amp; references</a></h1>
-	    </div>
+    <a href="@editLink"><img style="position: absolute; top: 0; right: 0; border: 0;" src="@routes.Assets.at("images/edit.png")" alt="Edit this content directly in Github"></a>
+        <a href="http://github.com/ndeverge/play2-docs-renderer"><img style="position: absolute; top: 0; left: 0; border: 0;" src="https://s3.amazonaws.com/github/ribbons/forkme_left_darkblue_121621.png" alt="Fork me on GitHub"></a>
+    <section id="content">
+	    <article>
+	    	@Html(body)
+	    </article>
+	    <aside>
+	    	@Html(sidebar)
+	    </aside>
 	</section>
-        <div id="content" class="wrapper doc">
-		    <article>
-		    	@Html(body)
-		    </article>
-		    <aside>
-		    	@Html(sidebar)
-		    </aside>
-		</div>
     </body>
     @if(play.Play.isProd){
     <script type="text/javascript">
